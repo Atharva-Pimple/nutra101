@@ -1,4 +1,4 @@
-const config=require('config');
+require('dotenv').config();
 const mongoose=require('mongoose');
 const Joi= require('joi');
 const passwordComplexity=require('joi-password-complexity');
@@ -38,7 +38,7 @@ const userSchema=new mongoose.Schema({
 });
 
 userSchema.methods.genAuthToken=function(){
-    const token=jwt.sign({_id: this._id, isSupplier:this.isSupplier},config.get('jwtPrivateKey'));
+    const token=jwt.sign({_id: this._id, isSupplier:this.isSupplier},process.env.jwtPrivateKey);
     return token;
 }
 

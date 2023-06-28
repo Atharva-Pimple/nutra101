@@ -1,11 +1,10 @@
-const config=require("config");
+require('dotenv').config();
 const mongoose=require("mongoose");
 const winston=require("winston");
 
 module.exports=function(){
-    const db=config.get('db');
-    mongoose.connect(db)
-        .then(()=>winston.info(`connected to ${db}`))
+    mongoose.connect(process.env.db)
+        .then(()=>winston.info(`connected to mongodb`))
         .catch(err=>console.error('could not connect mongoDb'))
 
 }

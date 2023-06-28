@@ -1,6 +1,8 @@
+require('dotenv').config();
 const mongoose=require('mongoose');
 const Joi=require('joi');
 const passwordComplexity=require('joi-password-complexity');
+const jwt=require('jsonwebtoken');
 
 const supplierSchema=new mongoose.Schema({
     name:{
@@ -29,6 +31,10 @@ const supplierSchema=new mongoose.Schema({
     }
 });
 
+supplierSchema.methods.genAuthToken=function(){
+    const token=jwt.sign({_id: this._id},process.env.jwtPrivateKey);
+    return token;
+}
 
 
 const Supplier=mongoose.model('supplier',supplierSchema);
@@ -37,8 +43,7 @@ const complexityOptions = {
     min: 5,
     max: 250,
     upperCase: 1,
-    numeric: 1,
-    symbol: 1
+    numeric: 1
 };
 
 function validateSupplier(supplier){

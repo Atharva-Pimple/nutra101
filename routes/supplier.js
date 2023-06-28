@@ -31,7 +31,9 @@ router.post('/',async(req,res)=>{
     supplier.password=await bcrypt.hash(supplier.password,salt);
     await supplier.save()
 
-    res.send(_.pick(supplier,['name','contactNo','email']));
+    const token=  supplier.genAuthToken();
+
+    res.header('sup-auth-token',token).send(_.pick(supplier,['name','contactNo','email']));
 
 });
 
